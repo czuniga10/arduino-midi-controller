@@ -4,7 +4,7 @@ CSIS-2810 Arduino Midi Controller Team Project.
 ## About
 
 Currently, our goal is to create a functional midi controller with buttons, knobs and LCD display.
-Constructed within a clear case.
+Constructed within a clear case!
 
 ## Resources
 
