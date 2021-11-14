@@ -334,10 +334,12 @@ void loop()
   
   lcd.setCursor(0,0); // Sets the cursor to col 0 and row 0
   lcd.print("Master Vol: "); // Prints Sensor Val: to LCD
-  lcd.print(analogRead(potPin1)); // Prints value on Potpin1 to LCD
+//  lcd.print(analogRead(potPin1)); // Prints value on Potpin1 to LCD
+  lcd.print((int)(floor(analogRead(potPin1)/100))); // Prints value on Potpin1 to LCD
   lcd.setCursor(0,1); // Sets the cursor to col 1 and row 0
   lcd.print("SensorVal2: "); // Prints Sensor Val: to LCD
-  lcd.print(analogRead(potPin2)); // Prints value on Potpin1 to LCD
+//  lcd.print(analogRead(potPin2)); // Prints value on Potpin1 to LCD
+  lcd.print((int)(floor(analogRead(potPin2)/100))); // Prints value on Potpin1 to LCD
 
   //LCD END
 
