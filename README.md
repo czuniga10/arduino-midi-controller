@@ -1,5 +1,5 @@
 # arduino-midi-controller
-CSIS-2810 Arduino Midi Controller Team Project.
+CSIS-2810 Arduino Midi Controller Team Project. (Main directory is /MIDI_Controller. The others are just us sharing code together before we merged it all together.)
 
 ## About
 
