@@ -1,8 +1,12 @@
-// include the library code:
+// include the lcd library
 #include <LiquidCrystal.h>
 
-// initialize the library with the numbers of the interface pins
+// initialize lcd object from library with correct pins
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
+
+//
+// We used the code below to help with mapping Midi I/O to Arduino
+
 // Basic MIDI Controller code for reading all of the Arduino's digital and analogue inputs
 // and sending them as MIDI messages to the host PC.
 //
@@ -40,8 +44,6 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 #define TEENSY_2
 #elif defined(__AVR_AT90USB1286__)
 #define TEENSY_PLUS_PLUS_2
-#else
-//#define ARDUINO
 #endif
 
 
@@ -251,14 +253,15 @@ unsigned long loopTime = 0;
 unsigned long serialSendTime = 0;
 #endif
 
-//LCD
+// initialize LCD Begin
 
+// initialize lcd object from library
+int volPin1 = A1;
+int volPin2 = A2;
 
-int potPin1 = A1;
-int potPin2 = A2;
+// initialize LCD End
 
-//LCD End
-
+//Custom Character Bitmap
 byte musicNote[8] = {
   0b01111,
   0b01001,
@@ -270,58 +273,95 @@ byte musicNote[8] = {
   0b11011
 };
 
-//LCD Startup!
-void startUp() {
+//LCD Startup function
+void startUp() 
+{
+  //initial delay
   delay(1000);
-  //Music Notes
+
+  //Dancing Music Notes
   for (int i = 0; i <= 15; i++) {
+    //initialize custom character for lcd display
     lcd.createChar(0, musicNote);
+
+    // alternate displaying new music note
+    // from the top and bottom row of lcd screen
     if (i % 2 == 0) {
       lcd.setCursor(i, 0);
     } else {
       lcd.setCursor(i, 1);
     }
 
+    // write custom character to lcd display
     lcd.write(byte(0));
+
+    //short delay between alternating of the rows 
     delay(300);
   }
+  
+  // delay and clear screen
   delay(2000);
   lcd.clear();
 
-  //Project Name
+  // Begin displaying Project Name
+
+  // set cursor to row 1
   lcd.setCursor(0, 0);
+
+  // print Project Name on lcd display
   lcd.print("Midi Controller");
   delay(6000);
+
+  // float current display out of frame 
+  // to the right
   for (int i = 0; i <= 15; i++) {
     lcd.scrollDisplayRight();
     delay(90);
   }
+  
+  // clear lcd screen
   lcd.clear();
 
-  //Authors
+  //Begin displaying Authors
+
+  // set cursor to row 1
   lcd.setCursor(0, 0);
+
+  // print author names
   lcd.print("By: Jordan, Jim");
+
+  // set cursor to row 2
   lcd.setCursor(0, 1);
+
+  // print author names
   lcd.print("Hayden and Chad");
+
+  // hold display for 6 seconds
   delay(6000);
+
+  // float away right
   for (int i = 0; i <= 15; i++) {
     lcd.scrollDisplayRight();
     delay(90);
   }
+
+  // clear lcd screen and delay 1 second
   lcd.clear();
   delay(1000);
 }
+
 void setup()
 {
-  //LCD
+  // Begin LCD setup
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
   lcd.clear();
 
-  pinMode(potPin1, INPUT);
-  pinMode(potPin2, INPUT);
+  // set correct pins used for lcd as Inputs
+  pinMode(volPin1, INPUT);
+  pinMode(volPin2, INPUT);
 
-  //LCD END
+  //LCD setup END
 
 
   // Taken from http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1208715493/11
@@ -377,22 +417,38 @@ void setup()
   serialSendTime = millis();
 #endif
 
+  // run custom startup function
   startUp();
 }
 
 
 void loop()
 {
-  //LCD
+  //Begin LCD loop process
 
+  // set cursor to first row
   lcd.setCursor(0, 0); 
-  lcd.print("Master Vol: ");
-  lcd.print((int)(floor(analogRead(potPin1) / 100))); 
-  lcd.setCursor(0, 1); 
-  lcd.print("Modulator : "); 
-  lcd.print((int)(floor(analogRead(potPin2) / 100))); 
 
-  //LCD END
+  // print first row's label
+  lcd.print("Master Vol: ");
+
+  // read input from midi mapped hardware,
+  // convert to integer, and divide by 100
+  // to display value in the correct way
+  lcd.print((int)(floor(analogRead(volPin1) / 100))); 
+
+  // set cursor to second row
+  lcd.setCursor(0, 1); 
+
+  // print second row's label
+  lcd.print("Modulator : "); 
+
+  // read input from midi mapped hardware,
+  // convert to integer, and divide by 100
+  // to display value in the correct way
+  lcd.print((int)(floor(analogRead(volPin2) / 100))); 
+
+  // END LCD loop process
 
 
 #ifdef DEBUG
